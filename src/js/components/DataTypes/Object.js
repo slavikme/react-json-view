@@ -82,20 +82,25 @@ class RjvObject extends React.PureComponent {
     }
 
     toggleCollapsed = () => {
+        const { onToggleCollapse, name, namespace, rjvId } = this.props;
+
         this.setState(
             {
                 expanded: !this.state.expanded
             },
             () => {
                 AttributeStore.set(
-                    this.props.rjvId,
-                    this.props.namespace,
+                    rjvId,
+                    namespace,
                     'expanded',
                     this.state.expanded
                 );
+                if (typeof onToggleCollapse === 'function') {
+                    onToggleCollapse({ expanded: this.state.expanded, name, namespace });
+                }
             }
         );
-    };
+    }
 
     getObjectContent = (depth, src, props) => {
         return (
